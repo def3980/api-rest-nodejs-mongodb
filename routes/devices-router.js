@@ -1,4 +1,4 @@
-var Devices  = require('../models/devices-model'),
+var Devices = require('../models/devices-model'),
     express = require('express'),
     router  = express.Router();
 
@@ -7,12 +7,12 @@ var Devices  = require('../models/devices-model'),
 router
     .route('/devices')
     .get(function (req, res) {
-        Devices.find(function (err, movies) {
+        Devices.find(function (err, devices) {
             if (err) {
                 return res.send(err);
             }
 
-            res.json(movies);
+            res.json(devices);
         });
     });
 
@@ -84,4 +84,4 @@ router
 // + ----------------------------------- FIN CRUD +
 
 // Exportando las rutas creadas
-module.export = router;
+module.exports = router;

@@ -10,7 +10,8 @@ var devices = require('./routes/devices-router');
 
 // Conectandose a MongoDB
 var dbname = 'dmlMDB',
-    conn   = 'mongodb://localhost:27017/' + dbname;
+    port   = '27017',
+    conn   = 'mongodb://localhost:' + port + '/' + dbname;
 
 // Iniciando la conexion
 mongoose.connect(conn, function (err, res) {
