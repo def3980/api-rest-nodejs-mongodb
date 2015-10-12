@@ -1,8 +1,16 @@
 {
   "name": "api-rest-nodejs-mongodb",
   "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "main": "./bin/www",
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies": {
-    "mongoose": "~3.6.11",
+    "mongoose": "~3.8.11",
     "express": "^4.7.1",
     "method-override": "^2.1.2",
     "body-parser": "^1.5.1"
