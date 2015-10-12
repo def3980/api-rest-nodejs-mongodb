@@ -5,8 +5,20 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// adquiriendo mongodb
+var mongoose = require('mongoose');
+
+// requiriendo el modelo de datos 'Device'
+// antes de llamar al enrutamiento para
+// no tener problemas
+require('./models/Devices');
+
+// agregando mongodb al proyecto
+mongoose.connect('mongodb://localhost/dml');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var devices = require('./routes/devices');
 
 var app = express();
 
@@ -24,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/', devices);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -55,6 +68,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
