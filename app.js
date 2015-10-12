@@ -1,7 +1,7 @@
 // Importanciones
 var express        = require('express'),
     bodyParser     = require('body-parser'),
-    methodOverride = require("method-override"),
+    methodOverride = require('method-override'),
     mongoose       = require('mongoose'),
     app            = express(); // Creando una app Express
 
@@ -26,7 +26,7 @@ mongoose.connect(conn, function (err, res) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
-app.use('/api', devices); // This is our route middleware
+app.use('/api-dml', devices); // This is our route middleware
 
 // exporto toda la configuracion
 module.exports = app;
