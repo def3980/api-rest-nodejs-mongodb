@@ -1,87 +1,60 @@
-// Importanciones
-var express        = require('express'),
-    bodyParser     = require('body-parser'),
-    methodOverride = require('method-override'),
-    mongoose       = require('mongoose'),
-    app            = express(); // Creando una app Express
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-// Cargando las rutas ya definidas
-var devices = require('./routes/devices-router');
+var routes = require('./routes/index');
+var users = require('./routes/users');
 
-// Conectandose a MongoDB
-var dbname = 'dmlMDB',
-    port   = '27017',
-    conn   = 'mongodb://localhost:' + port + '/' + dbname;
+var app = express();
 
-// Iniciando la conexion
-mongoose.connect(conn, function (err, res) {
-    if (err) {
-        throw err;
-        console.log('Error: ' + err);
-    }
-    // Indicando un mensaje de conexion
-    console.log('Connected to Database');
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', routes);
+app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-// Configurando las respuestas que va a dar el servidor
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(methodOverride());
-app.use('/api-dml', devices); // This is our route middleware
+// error handlers
 
-// exporto toda la configuracion
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+
 module.exports = app;
-
-//var express        = require("express"),
-//    app            = express(),
-//    bodyParser     = require("body-parser"),
-//    methodOverride = require("method-override"),
-//    mongoose       = require('mongoose'),
-//    dbdml          = 'dml',
-//    devicesModel   = 'DevicesDmlModel',
-//    deviceCtrl     = 'DevicesDmlCtrl';
-
-// Connection to DB
-//mongoose.connect('mongodb://localhost/' + dbdml, function (err, res) {
-//    if (err) {
-//        throw err;
-//    }
-//    console.log('Connected to Database');
-//});
-
-// Middlewares
-//app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(bodyParser.json());
-//app.use(methodOverride());
-
-// Import Models and controllers
-//var models     = require('./models/' + devicesModel)(app, mongoose);
-//var TVShowCtrl = require('./controllers/' + deviceCtrl);
-
-// Example Route
-//var router = express.Router();
-//router.get('/', function (req, res) {
-//    res.send("Hello world!");
-//});
-//app.use(router);
-
-// API routes
-//var tvshows = express.Router();
-//
-//tvshows
-//    .route('/tvshows')
-//    .get(TVShowCtrl.findAllTVShows)
-//    .post(TVShowCtrl.addTVShow);
-//
-//tvshows
-//    .route('/tvshow/:id')
-//    .get(TVShowCtrl.findById)
-//    .put(TVShowCtrl.updateTVShow)
-//    .delete(TVShowCtrl.deleteTVShow);
-
-//app.use('/api', tvshows);
-
-// Start server
-//app.listen(3000, function() {
-//    console.log("Node server running on http://localhost:3000");
-//});
